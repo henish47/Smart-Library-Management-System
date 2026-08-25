@@ -1,0 +1,30 @@
+# Compiled Class files
+*.class
+
+# Log files
+*.log
+
+# Package output files (ignore generated WARs)
+dist/
+build/
+target/
+bin/
+out/
+*.war
+*.ear
+
+# IDE specific files (IntelliJ / Eclipse / VS Code cache)
+.idea/
+*.iml
+.metadata/
+.recommenders/
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Keep manually managed library JARs
+!WebContent/WEB-INF/lib/*.jar
+!lib-compile/*.jar
