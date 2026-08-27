@@ -7,8 +7,7 @@ import java.io.IOException;
 
 /**
  * Filter that configures Cross-Origin Resource Sharing (CORS) headers.
- * Allows the upcoming React frontend (Vite @ localhost:5173, CRA @ localhost:3000, etc.)
- * to communicate seamlessly with this Servlet backend.
+ * Supports credentials and session cookies for the React frontend (Vite @ localhost:5173).
  */
 public class CorsFilter implements Filter {
 
@@ -24,8 +23,15 @@ public class CorsFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        // Set CORS headers
-        resp.setHeader("Access-Control-Allow-Origin", "*");
+        // Set CORS headers matching requesting origin to allow credentials
+        String origin = req.getHeader("Origin");
+        if (origin != null && !origin.trim().isEmpty()) {
+            resp.setHeader("Access-Control-Allow-Origin", origin);
+        } else {
+            resp.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        }
+
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With, Origin");
         resp.setHeader("Access-Control-Max-Age", "3600");

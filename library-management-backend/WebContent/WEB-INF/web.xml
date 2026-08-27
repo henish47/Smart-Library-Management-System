@@ -24,6 +24,28 @@
     <!-- SERVLET DECLARATIONS & MAPPINGS                                      -->
     <!-- ==================================================================== -->
 
+    <!-- Authentication Servlet -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.library.servlet.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/api/auth</url-pattern>
+        <url-pattern>/api/auth/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Dashboard Metrics Servlet -->
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.library.servlet.DashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/api/dashboard</url-pattern>
+        <url-pattern>/api/dashboard/*</url-pattern>
+    </servlet-mapping>
+
     <!-- Category Servlet -->
     <servlet>
         <servlet-name>CategoryServlet</servlet-name>

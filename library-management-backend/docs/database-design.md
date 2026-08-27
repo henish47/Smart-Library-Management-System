@@ -177,6 +177,8 @@ Stores book loan transactions and return statuses.
 | **READ** | Student | `StudentDAO.getStudentById`| `SELECT * FROM students WHERE id = ?` |
 | **READ (Search)**| Student | `StudentDAO.searchStudents`| `SELECT * FROM students WHERE LOWER(enrollment_no) LIKE ? OR LOWER(name) LIKE ? ...` |
 | **UPDATE** | Student | `StudentDAO.updateStudent` | `UPDATE students SET enrollment_no=?, name=?, department=?, semester=?, email=?, phone=? WHERE id=?` |
-| **DELETE** | Student | `StudentDAO.deleteStudent` | `DELETE FROM students WHERE id = ?` |
+| **CREATE (Auth)**| Admin | `AdminDAO.register` | `INSERT INTO admin (username, password, name, email) VALUES (?, ?, ?, ?)` |
+| **READ (Auth)** | Admin | `AdminDAO.authenticate` | `SELECT id, username, password, name, email FROM admin WHERE LOWER(username)=LOWER(?) AND password=?` |
+| **READ (Auth)** | Admin | `AdminDAO.isUsernameExists` | `SELECT COUNT(*) FROM admin WHERE LOWER(TRIM(username)) = LOWER(TRIM(?))` |
 | **TRANSACTION** | IssuedBook | `IssuedBookDAO.issueBook` | 1. Lock Book: `SELECT available_quantity FROM books WHERE id = ? FOR UPDATE`<br>2. Insert Issue: `INSERT INTO issued_books (...) VALUES (...)`<br>3. Deduct Stock: `UPDATE books SET available_quantity = available_quantity - 1 WHERE id = ?` |
 | **TRANSACTION** | IssuedBook | `IssuedBookDAO.returnBook`| 1. Lock Issue: `SELECT book_id, status FROM issued_books WHERE id = ? FOR UPDATE`<br>2. Update Status: `UPDATE issued_books SET return_date = ?, status = 'RETURNED' WHERE id = ?`<br>3. Restore Stock: `UPDATE books SET available_quantity = available_quantity + 1 WHERE id = ?` |

@@ -27,10 +27,34 @@ public abstract class BaseServlet extends HttpServlet {
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        resp.setHeader("Access-Control-Allow-Origin", "*");
+        String origin = req.getHeader("Origin");
+        if (origin != null && !origin.trim().isEmpty()) {
+            resp.setHeader("Access-Control-Allow-Origin", origin);
+        } else {
+            resp.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        }
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With, Origin");
         resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    /**
+     * Retrieves the currently logged-in user from HttpSession, if any.
+     */
+    protected com.library.model.Admin getAuthenticatedUser(HttpServletRequest req) {
+        javax.servlet.http.HttpSession session = req.getSession(false);
+        if (session != null) {
+            return (com.library.model.Admin) session.getAttribute("user");
+        }
+        return null;
+    }
+
+    /**
+     * Checks if the current request is authenticated.
+     */
+    protected boolean isAuthenticated(HttpServletRequest req) {
+        return getAuthenticatedUser(req) != null;
     }
 
     /**

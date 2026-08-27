@@ -1,3 +1,8 @@
+# Node / Frontend
+node_modules/
+dist/
+.vite/
+
 # Compiled Class files
 *.class
 
@@ -5,7 +10,6 @@
 *.log
 
 # Package output files (ignore generated WARs)
-dist/
 build/
 target/
 bin/
