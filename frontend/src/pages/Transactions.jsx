@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   History,
   Search,
-  Filter,
-  CheckCircle2,
-  Clock,
-  BookOpen,
-  Users,
 } from 'lucide-react';
 import { issuedBooksAPI } from '../services/api';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
@@ -25,7 +20,7 @@ export const Transactions = () => {
       setLoading(true);
       setError('');
       const res = await issuedBooksAPI.getAll(statusFilter);
-      if (res && res.success) {
+      if (res?.success) {
         setTransactions(res.data || []);
       }
     } catch (err) {
@@ -40,113 +35,101 @@ export const Transactions = () => {
   }, [statusFilter]);
 
   const filteredTransactions = transactions.filter((tx) => {
-    const query = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase();
     return (
-      tx.studentName?.toLowerCase().includes(query) ||
-      tx.studentEnrollment?.toLowerCase().includes(query) ||
-      tx.bookTitle?.toLowerCase().includes(query) ||
-      tx.bookIsbn?.toLowerCase().includes(query)
+      tx.studentName?.toLowerCase().includes(q) ||
+      tx.studentEnrollment?.toLowerCase().includes(q) ||
+      tx.bookTitle?.toLowerCase().includes(q)
     );
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5">
-          <History className="w-7 h-7 text-indigo-600" />
-          Transaction Logs & Circulation History
-        </h1>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Complete audit trail of all library book borrowings and returns
-        </p>
+        <h1 className="text-xl font-bold text-slate-800">Circulation Transactions</h1>
+        <p className="text-xs text-slate-500">History of all issued and returned library books</p>
       </div>
 
-      {/* Filter Tabs & Search Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Status Filter Tabs */}
-        <div className="flex items-center p-1 bg-slate-100 rounded-xl w-full md:w-auto">
+      {/* Filter Tabs & Search */}
+      <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold w-full sm:w-auto">
           {['ALL', 'ISSUED', 'RETURNED'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex-1 md:flex-none ${
+              className={`px-3 py-1 rounded-md transition-all flex-1 sm:flex-none ${
                 statusFilter === st
                   ? 'bg-white text-indigo-600 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              {st === 'ALL' ? 'All Transactions' : st === 'ISSUED' ? 'Currently Borrowed' : 'Returned'}
+              {st === 'ALL' ? 'All' : st === 'ISSUED' ? 'Issued' : 'Returned'}
             </button>
           ))}
         </div>
 
-        {/* Search */}
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full sm:w-64">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Filter by student or book title..."
-            className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 transition-all"
+            placeholder="Search transactions..."
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
           />
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2" />
         </div>
       </div>
 
-      {/* Main Table */}
+      {/* Table Content */}
       {loading ? (
-        <LoadingSpinner message="Loading circulation history..." />
+        <LoadingSpinner message="Loading transactions..." />
       ) : error ? (
         <ErrorState message={error} onRetry={loadTransactions} />
       ) : filteredTransactions.length === 0 ? (
         <EmptyState
-          icon={History}
           title="No Transactions Found"
-          description={searchQuery ? `No transactions match "${searchQuery}".` : 'No loan activity recorded under this status.'}
+          description={searchQuery ? `No transactions match "${searchQuery}".` : 'No transactions recorded under this filter.'}
         />
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Tx ID</th>
-                  <th className="py-3.5 px-4">Student Info</th>
-                  <th className="py-3.5 px-4">Book Info</th>
-                  <th className="py-3.5 px-4 font-mono">Issue Date</th>
-                  <th className="py-3.5 px-4 font-mono">Due Date</th>
-                  <th className="py-3.5 px-4 font-mono">Return Date</th>
-                  <th className="py-3.5 px-4 text-right">Status</th>
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase">
+                  <th className="py-2.5 px-3">ID</th>
+                  <th className="py-2.5 px-3">Student</th>
+                  <th className="py-2.5 px-3">Book Title</th>
+                  <th className="py-2.5 px-3 font-mono">Issue Date</th>
+                  <th className="py-2.5 px-3 font-mono">Due Date</th>
+                  <th className="py-2.5 px-3 font-mono">Return Date</th>
+                  <th className="py-2.5 px-3 text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredTransactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-semibold text-slate-400">#{tx.id}</td>
-                    <td className="py-3.5 px-4">
-                      <p className="font-bold text-slate-800 text-sm">{tx.studentName}</p>
-                      <p className="text-indigo-600 font-mono text-[11px] font-medium">{tx.studentEnrollment}</p>
+                  <tr key={tx.id} className="hover:bg-slate-50">
+                    <td className="py-2.5 px-3 font-mono text-slate-500">#{tx.id}</td>
+                    <td className="py-2.5 px-3">
+                      <span className="font-bold text-slate-800">{tx.studentName}</span>{' '}
+                      <span className="text-slate-400 font-mono">({tx.studentEnrollment})</span>
                     </td>
-                    <td className="py-3.5 px-4">
-                      <p className="font-bold text-slate-800">{tx.bookTitle}</p>
-                      <p className="text-slate-400 font-mono text-[11px]">ISBN: {tx.bookIsbn}</p>
-                    </td>
-                    <td className="py-3.5 px-4 font-mono text-slate-600">{tx.issueDate}</td>
-                    <td className="py-3.5 px-4 font-mono text-slate-600">{tx.dueDate}</td>
-                    <td className="py-3.5 px-4 font-mono text-slate-600">
+                    <td className="py-2.5 px-3 font-medium text-slate-800">{tx.bookTitle}</td>
+                    <td className="py-2.5 px-3 font-mono text-slate-600">{tx.issueDate}</td>
+                    <td className="py-2.5 px-3 font-mono text-slate-600">{tx.dueDate}</td>
+                    <td className="py-2.5 px-3 font-mono text-slate-600">
                       {tx.returnDate ? (
                         <span className="text-emerald-700 font-semibold">{tx.returnDate}</span>
                       ) : (
-                        <span className="text-slate-400 italic">Not Returned</span>
+                        <span className="text-slate-400">-</span>
                       )}
                     </td>
-                    <td className="py-3.5 px-4 text-right">
+                    <td className="py-2.5 px-3 text-right">
                       <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
                           tx.status === 'ISSUED'
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                            : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                            ? 'bg-amber-100 text-amber-800'
+                            : 'bg-emerald-100 text-emerald-800'
                         }`}
                       >
                         {tx.status}
@@ -157,9 +140,8 @@ export const Transactions = () => {
               </tbody>
             </table>
           </div>
-
-          <div className="p-4 border-t border-slate-100 bg-slate-50/50 text-xs text-slate-500 flex items-center justify-between">
-            <span>Showing {filteredTransactions.length} transaction records</span>
+          <div className="p-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500">
+            Showing {filteredTransactions.length} transaction records
           </div>
         </div>
       )}

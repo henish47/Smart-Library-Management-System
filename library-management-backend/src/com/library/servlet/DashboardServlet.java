@@ -22,8 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Servlet providing real aggregated statistics and recent transactions
- * for the Dashboard page.
+ * Simple Dashboard Servlet for College AJT Mini Project.
+ * Returns only 4 key statistics + recent transactions.
  * GET /api/dashboard
  */
 @WebServlet(name = "DashboardServlet", urlPatterns = {"/api/dashboard", "/api/dashboard/*"})
@@ -40,33 +40,17 @@ public class DashboardServlet extends BaseServlet {
             try (Connection conn = DBConnection.getConnection()) {
                 // 1. Total Books & Available Books
                 String bookSql = "SELECT COALESCE(SUM(quantity), 0) AS total_qty, " +
-                                 "       COALESCE(SUM(available_quantity), 0) AS avail_qty, " +
-                                 "       COUNT(id) AS total_titles FROM books";
+                                 "       COALESCE(SUM(available_quantity), 0) AS avail_qty " +
+                                 "FROM books";
                 try (PreparedStatement ps = conn.prepareStatement(bookSql);
                      ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         stats.put("totalBooks", rs.getInt("total_qty"));
                         stats.put("availableBooks", rs.getInt("avail_qty"));
-                        stats.put("totalTitles", rs.getInt("total_titles"));
                     }
                 }
 
-                // 2. Total Issued Books & Returned Books
-                String issuedSql = "SELECT " +
-                                   "  SUM(CASE WHEN status = 'ISSUED' THEN 1 ELSE 0 END) AS issued_count, " +
-                                   "  SUM(CASE WHEN status = 'RETURNED' THEN 1 ELSE 0 END) AS returned_count, " +
-                                   "  COUNT(id) AS total_transactions " +
-                                   "FROM issued_books";
-                try (PreparedStatement ps = conn.prepareStatement(issuedSql);
-                     ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        stats.put("issuedBooks", rs.getInt("issued_count"));
-                        stats.put("returnedBooks", rs.getInt("returned_count"));
-                        stats.put("totalTransactions", rs.getInt("total_transactions"));
-                    }
-                }
-
-                // 3. Total Students
+                // 2. Total Students
                 String studentSql = "SELECT COUNT(id) FROM students";
                 try (PreparedStatement ps = conn.prepareStatement(studentSql);
                      ResultSet rs = ps.executeQuery()) {
@@ -75,40 +59,21 @@ public class DashboardServlet extends BaseServlet {
                     }
                 }
 
-                // 4. Total Categories
-                String categorySql = "SELECT COUNT(id) FROM categories";
-                try (PreparedStatement ps = conn.prepareStatement(categorySql);
+                // 3. Issued Books Count
+                String issuedSql = "SELECT COUNT(id) FROM issued_books WHERE status = 'ISSUED'";
+                try (PreparedStatement ps = conn.prepareStatement(issuedSql);
                      ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        stats.put("totalCategories", rs.getInt(1));
+                        stats.put("issuedBooks", rs.getInt(1));
                     }
                 }
-
-                // 5. Category Distribution (Category Name & Book Copies Count)
-                String distSql = "SELECT c.name, COALESCE(SUM(b.quantity), 0) AS book_count, COUNT(b.id) AS title_count " +
-                                 "FROM categories c " +
-                                 "LEFT JOIN books b ON c.id = b.category_id " +
-                                 "GROUP BY c.id, c.name " +
-                                 "ORDER BY book_count DESC";
-                List<Map<String, Object>> categoryStats = new ArrayList<>();
-                try (PreparedStatement ps = conn.prepareStatement(distSql);
-                     ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        Map<String, Object> catMap = new HashMap<>();
-                        catMap.put("name", rs.getString("name"));
-                        catMap.put("bookCount", rs.getInt("book_count"));
-                        catMap.put("titleCount", rs.getInt("title_count"));
-                        categoryStats.add(catMap);
-                    }
-                }
-                stats.put("categoryDistribution", categoryStats);
 
             } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, "Error calculating dashboard statistics", e);
+                LOGGER.log(Level.SEVERE, "Error fetching simple dashboard statistics", e);
                 throw new DatabaseException("Failed to load dashboard metrics: " + e.getMessage(), e);
             }
 
-            // 6. Recent 5 Transactions
+            // 4. Recent Transactions (latest 5)
             List<IssuedBook> allIssued = issuedBookDAO.getAllIssuedBooks(null);
             List<IssuedBook> recent = new ArrayList<>();
             for (int i = 0; i < Math.min(5, allIssued.size()); i++) {

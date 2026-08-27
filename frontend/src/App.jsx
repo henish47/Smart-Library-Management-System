@@ -13,8 +13,6 @@ import { Categories } from './pages/Categories';
 import { IssueBook } from './pages/IssueBook';
 import { ReturnBook } from './pages/ReturnBook';
 import { Transactions } from './pages/Transactions';
-import { Reports } from './pages/Reports';
-import { Profile } from './pages/Profile';
 import { NotFound } from './pages/NotFound';
 
 export const App = () => {
@@ -22,11 +20,11 @@ export const App = () => {
     <Router>
       <AuthProvider>
         <Routes>
-          {/* Public Routes */}
+          {/* Public Authentication Pages */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Protected Routes enclosed in DashboardLayout */}
+          {/* Protected Main Pages */}
           <Route
             path="/"
             element={
@@ -43,8 +41,6 @@ export const App = () => {
             <Route path="issue-book" element={<IssueBook />} />
             <Route path="return-book" element={<ReturnBook />} />
             <Route path="transactions" element={<Transactions />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* 404 Fallback */}

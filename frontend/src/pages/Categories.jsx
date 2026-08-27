@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   Layers,
   Plus,
-  Edit2,
+  Edit,
   Trash2,
   AlertCircle,
-  Loader2,
-  BookOpen,
 } from 'lucide-react';
 import { categoriesAPI } from '../services/api';
 import { Modal } from '../components/common/Modal';
@@ -41,7 +39,7 @@ export const Categories = () => {
       setLoading(true);
       setError('');
       const res = await categoriesAPI.getAll();
-      if (res && res.success) {
+      if (res?.success) {
         setCategories(res.data || []);
       }
     } catch (err) {
@@ -86,14 +84,14 @@ export const Categories = () => {
       if (editingCategory) {
         const payload = { id: editingCategory.id, ...formData };
         const res = await categoriesAPI.update(payload);
-        if (res && res.success) {
+        if (res?.success) {
           showToast(`Category "${formData.name}" updated!`);
           setIsModalOpen(false);
           loadCategories();
         }
       } else {
         const res = await categoriesAPI.create(formData);
-        if (res && res.success) {
+        if (res?.success) {
           showToast(`Category "${formData.name}" created!`);
           setIsModalOpen(false);
           loadCategories();
@@ -111,7 +109,7 @@ export const Categories = () => {
     try {
       setFormSubmitting(true);
       const res = await categoriesAPI.delete(categoryToDelete.id);
-      if (res && res.success) {
+      if (res?.success) {
         showToast(`Category "${categoryToDelete.name}" deleted.`);
         setIsDeleteModalOpen(false);
         setCategoryToDelete(null);
@@ -126,22 +124,17 @@ export const Categories = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-5">
+      {/* Header & Add Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5">
-            <Layers className="w-7 h-7 text-indigo-600" />
-            Book Categories & Disciplines
-          </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Organize catalog inventory by subject genres and engineering branches
-          </p>
+          <h1 className="text-xl font-bold text-slate-800">Categories Management</h1>
+          <p className="text-xs text-slate-500">Manage book genres and subject categories</p>
         </div>
 
         <button
           onClick={handleOpenCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition-all self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           Add Category
@@ -156,54 +149,53 @@ export const Categories = () => {
       ) : categories.length === 0 ? (
         <EmptyState
           title="No Categories Available"
-          description="Create categories to classify books into academic subjects."
-          actionText="Create Category"
+          description="Create categories to organize books."
+          actionText="Add Category"
           onAction={handleOpenCreateModal}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm card-hover flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs">
-                    <BookOpen className="w-4 h-4" />
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => handleOpenEditModal(cat)}
-                      title="Edit Category"
-                      className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                    >
-                      <Edit2 className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setCategoryToDelete(cat);
-                        setIsDeleteModalOpen(true);
-                      }}
-                      title="Delete Category"
-                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-
-                <h3 className="font-bold text-slate-800 text-sm mb-1">{cat.name}</h3>
-                <p className="text-xs text-slate-500 line-clamp-3">
-                  {cat.description || 'No description provided for this category.'}
-                </p>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                <span>Category ID: #{cat.id}</span>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase">
+                  <th className="py-2.5 px-3">ID</th>
+                  <th className="py-2.5 px-3">Category Name</th>
+                  <th className="py-2.5 px-3">Description</th>
+                  <th className="py-2.5 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {categories.map((cat) => (
+                  <tr key={cat.id} className="hover:bg-slate-50">
+                    <td className="py-2.5 px-3 font-mono text-slate-500">#{cat.id}</td>
+                    <td className="py-2.5 px-3 font-bold text-slate-800">{cat.name}</td>
+                    <td className="py-2.5 px-3 text-slate-600">{cat.description || '-'}</td>
+                    <td className="py-2.5 px-3 text-right space-x-1">
+                      <button
+                        onClick={() => handleOpenEditModal(cat)}
+                        className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          setCategoryToDelete(cat);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        className="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded font-semibold"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="p-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500">
+            Total {categories.length} categories
+          </div>
         </div>
       )}
 
@@ -215,13 +207,13 @@ export const Categories = () => {
         size="sm"
       >
         {formError && (
-          <div className="mb-4 flex items-start gap-2.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
-            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <div className="mb-3 p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{formError}</span>
           </div>
         )}
 
-        <form onSubmit={handleSaveCategory} className="space-y-4 text-xs">
+        <form onSubmit={handleSaveCategory} className="space-y-3 text-xs">
           <div>
             <label className="block font-bold text-slate-700 mb-1">Category Name *</label>
             <input
@@ -230,7 +222,7 @@ export const Categories = () => {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="e.g. Artificial Intelligence"
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
             />
           </div>
 
@@ -240,26 +232,25 @@ export const Categories = () => {
               rows={3}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="e.g. Machine Learning, Deep Learning, Neural Networks"
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
+              placeholder="e.g. AI, Machine Learning, Deep Learning"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold"
+              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={formSubmitting}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-md shadow-indigo-600/30 disabled:opacity-70"
+              className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-70"
             >
-              {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-              {editingCategory ? 'Update Category' : 'Save Category'}
+              {formSubmitting ? 'Saving...' : editingCategory ? 'Update' : 'Add'}
             </button>
           </div>
         </form>
@@ -269,23 +260,18 @@ export const Categories = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title="Confirm Category Deletion"
+        title="Confirm Deletion"
         size="sm"
       >
-        <div className="space-y-4 text-xs text-slate-600">
+        <div className="space-y-3 text-xs text-slate-600">
           <p>
-            Are you sure you want to delete category{' '}
-            <strong className="text-slate-900 font-bold">{categoryToDelete?.name}</strong>?
+            Are you sure you want to delete category <strong>{categoryToDelete?.name}</strong>?
           </p>
-          <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 text-xs">
-            ⚠️ Categories currently associated with books cannot be deleted.
-          </div>
-
-          <div className="flex items-center justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={() => setIsDeleteModalOpen(false)}
-              className="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold"
+              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold"
             >
               Cancel
             </button>
@@ -293,10 +279,9 @@ export const Categories = () => {
               type="button"
               onClick={handleDeleteCategory}
               disabled={formSubmitting}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold shadow-md shadow-rose-600/30 disabled:opacity-70"
+              className="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold disabled:opacity-70"
             >
-              {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-              Delete Category
+              {formSubmitting ? 'Deleting...' : 'Delete'}
             </button>
           </div>
         </div>
