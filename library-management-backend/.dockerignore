@@ -1,0 +1,21 @@
+# Ignore git repository
+.git
+.gitignore
+
+# Ignore build artifacts (will be generated cleanly in container)
+build/
+dist/
+bin/
+out/
+target/
+
+# Ignore IDE files & caches
+.idea/
+.settings/
+.project
+.classpath
+*.iml
+.vscode/
+
+# Ignore logs
+*.log
