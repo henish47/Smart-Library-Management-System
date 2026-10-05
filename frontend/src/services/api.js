@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Centralized API Base URL configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/library-management/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'https://smart-library-management-system-6p3k.onrender.com/api';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -10,7 +10,7 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  timeout: 10000,
+  timeout: 15000,
 });
 
 // Response interceptor for standardized error extraction
@@ -31,7 +31,7 @@ apiClient.interceptors.response.use(
         errorMessage = 'Server error. Please verify backend & database status.';
       }
     } else if (error.request) {
-      errorMessage = 'Cannot reach backend server. Please verify Tomcat is running on port 8080.';
+      errorMessage = 'Cannot reach backend server. Please verify the backend service is running and accessible.';
     }
     return Promise.reject(new Error(errorMessage));
   }
