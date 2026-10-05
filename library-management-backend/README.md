@@ -140,6 +140,15 @@ library-management-backend/
 Edit the centralized configuration file:
 `src/db.properties`
 
+### Aiven Cloud MySQL:
+```properties
+db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://mysql-20ee2aab-henish-smart-library-2026.b.aivencloud.com:24579/library_management?sslMode=REQUIRED
+db.username=avnadmin
+db.password=YOUR_AIVEN_PASSWORD
+```
+
+### Localhost MySQL:
 ```properties
 db.driver=com.mysql.cj.jdbc.Driver
 db.url=jdbc:mysql://localhost:3306/library_management?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
@@ -148,7 +157,7 @@ db.password=your_mysql_password
 ```
 
 > [!TIP]
-> If your MySQL root user has no password, leave `db.password=` empty.
+> If your local MySQL root user has no password, leave `db.password=` empty. For Aiven Cloud, ensure `sslMode=REQUIRED` is appended in the JDBC URL.
 
 ---
 

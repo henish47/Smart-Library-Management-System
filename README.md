@@ -82,7 +82,17 @@ Database Name: `library_management`
    ```
 
 ### Step 2: Backend Configuration & Run
-1. Verify MySQL password in `library-management-backend/src/db.properties`:
+1. Verify MySQL configuration in `library-management-backend/src/db.properties`:
+
+   **For Aiven Cloud MySQL (Default):**
+   ```properties
+   db.driver=com.mysql.cj.jdbc.Driver
+   db.url=jdbc:mysql://mysql-20ee2aab-henish-smart-library-2026.b.aivencloud.com:24579/library_management?sslMode=REQUIRED
+   db.username=avnadmin
+   db.password=YOUR_AIVEN_PASSWORD
+   ```
+
+   **For Localhost MySQL:**
    ```properties
    db.driver=com.mysql.cj.jdbc.Driver
    db.url=jdbc:mysql://localhost:3306/library_management?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
