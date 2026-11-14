@@ -57,7 +57,7 @@ export const Register = () => {
           Create Admin Account
         </h2>
         <p className="mt-2 text-center text-sm text-indigo-300">
-          Register an administrator to manage the Smart Library
+          Register an administrator to manage the Library Management System
         </p>
       </div>
 
@@ -128,7 +128,7 @@ export const Register = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@smartlibrary.edu"
+                  placeholder="admin@library.edu"
                   className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
                 />
               </div>

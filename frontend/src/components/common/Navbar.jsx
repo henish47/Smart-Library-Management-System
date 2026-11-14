@@ -22,7 +22,7 @@ export const Navbar = ({ onToggleSidebar }) => {
           <Menu className="w-5 h-5" />
         </button>
         <span className="text-xs font-bold text-slate-700 hidden sm:inline">
-          AJT Mini Project • College Library System
+          College Library System
         </span>
       </div>
 

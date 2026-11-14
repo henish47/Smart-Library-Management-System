@@ -4,8 +4,8 @@ import { Library, Lock, User, ArrowRight, AlertCircle, Loader2 } from 'lucide-re
 import { useAuth } from '../context/AuthContext';
 
 export const Login = () => {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -47,7 +47,7 @@ export const Login = () => {
           </div>
         </div>
         <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Smart Library Management
+          Library Management System
         </h2>
         <p className="mt-2 text-center text-sm text-indigo-300">
           Sign in to manage catalog, students, and circulation
@@ -123,14 +123,7 @@ export const Login = () => {
             </div>
           </form>
 
-          {/* Quick Demo Credentials Tip */}
-          <div className="mt-6 p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl text-xs text-slate-600">
-            <span className="font-bold text-slate-800">Demo Admin Credentials:</span>
-            <div className="mt-1 flex items-center justify-between text-slate-500 font-mono">
-              <span>User: <strong className="text-slate-700">admin</strong></span>
-              <span>Pass: <strong className="text-slate-700">admin123</strong></span>
-            </div>
-          </div>
+
 
           <div className="mt-6 text-center">
             <p className="text-xs text-slate-500">

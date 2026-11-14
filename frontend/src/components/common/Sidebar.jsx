@@ -57,8 +57,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
                 <Library className="w-4 h-4" />
               </div>
               <div>
-                <h1 className="text-sm font-bold text-white leading-tight">Smart Library</h1>
-                <p className="text-[11px] text-indigo-400">AJT Mini Project</p>
+                <h1 className="text-sm font-bold text-white leading-tight">Library Management System</h1>
               </div>
             </div>
             <button
