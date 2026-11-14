@@ -54,10 +54,10 @@ export const Register = () => {
           </div>
         </div>
         <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Create Admin Account
+          Create Account
         </h2>
         <p className="mt-2 text-center text-sm text-indigo-300">
-          Register an administrator to manage the Library Management System
+          Register to manage the Library Management System
         </p>
       </div>
 

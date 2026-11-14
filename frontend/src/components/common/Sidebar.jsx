@@ -15,7 +15,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 
 export const Sidebar = ({ isOpen, onClose }) => {
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -93,21 +93,15 @@ export const Sidebar = ({ isOpen, onClose }) => {
           </nav>
         </div>
 
-        {/* User & Logout Bar */}
+        {/* Logout Bar */}
         <div className="p-3 border-t border-slate-800">
-          <div className="flex items-center justify-between p-2 rounded-xl bg-slate-800/60 text-xs">
-            <div className="truncate">
-              <p className="font-bold text-white truncate">{user?.name || 'Admin'}</p>
-              <p className="text-[10px] text-slate-400 truncate">@{user?.username || 'admin'}</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              title="Logout"
-              className="p-1 text-slate-400 hover:text-rose-400 transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800 hover:text-rose-400 transition-colors border border-slate-800"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Logout</span>
+          </button>
         </div>
       </aside>
     </>

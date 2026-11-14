@@ -1,10 +1,10 @@
 import React from 'react';
-import { Menu, LogOut, User } from 'lucide-react';
+import { Menu, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 export const Navbar = ({ onToggleSidebar }) => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -27,11 +27,6 @@ export const Navbar = ({ onToggleSidebar }) => {
       </div>
 
       <div className="flex items-center gap-3 text-xs">
-        <div className="flex items-center gap-2 text-slate-600">
-          <User className="w-4 h-4 text-slate-400" />
-          <span>Logged in as: <strong className="text-slate-800">{user?.username || 'admin'}</strong></span>
-        </div>
-
         <button
           onClick={handleLogout}
           className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 font-semibold transition-colors"
