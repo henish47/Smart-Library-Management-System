@@ -1,17 +1,17 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
 
-export const LoadingSpinner = ({ message = 'Loading data...', size = 'default' }) => {
+export const LoadingSpinner = ({ message = 'Accessing archives...', size = 'default' }) => {
   const sizeClasses = {
-    small: 'w-5 h-5',
-    default: 'w-8 h-8',
-    large: 'w-12 h-12',
+    small: 'w-4 h-4',
+    default: 'w-7 h-7',
+    large: 'w-10 h-10',
   };
 
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <Loader2 className={`${sizeClasses[size]} animate-spin text-indigo-600 mb-3`} />
-      <p className="text-sm font-medium text-slate-500">{message}</p>
+      <Loader2 className={`${sizeClasses[size]} animate-spin text-library-green mb-3`} />
+      <p className="font-serif text-xs text-library-charcoal-muted tracking-wide italic">{message}</p>
     </div>
   );
 };

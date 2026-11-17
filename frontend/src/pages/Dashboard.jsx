@@ -50,128 +50,139 @@ export const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Page Title & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-library-border/70">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Library Dashboard</h1>
-          <p className="text-xs text-slate-500">Summary overview of library stock and active student borrowings</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-library-green-dark tracking-tight">
+            Curator's Dashboard
+          </h1>
+          <p className="text-xs text-library-charcoal-muted mt-1 font-serif italic">
+            Catalog inventory ledger & active borrowing overview
+          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => navigate('/issue-book')}
-            className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-library-green hover:bg-library-green-dark text-library-ivory text-xs font-semibold rounded-lg shadow-sm border border-library-gold/30 transition-all hover:shadow"
           >
-            + Issue Book
+            <BookPlus className="w-3.5 h-3.5 text-library-gold" />
+            <span>Issue Volume</span>
           </button>
           <button
             onClick={() => navigate('/return-book')}
-            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-library-walnut hover:bg-library-walnut-dark text-library-ivory text-xs font-semibold rounded-lg shadow-sm border border-library-border/60 transition-all hover:shadow"
           >
-            Return Book
+            <BookCheck className="w-3.5 h-3.5 text-library-gold" />
+            <span>Accept Return</span>
           </button>
         </div>
       </div>
 
-      {/* 4 Simple Stat Cards */}
+      {/* 4 Classic Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Books */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-library-border border-l-4 border-l-library-green shadow-sm card-hover flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Books</p>
-            <h3 className="text-2xl font-extrabold text-slate-800 mt-1">
+            <p className="text-[11px] font-bold text-library-charcoal-muted uppercase tracking-wider">Catalog Titles</p>
+            <h3 className="font-serif text-3xl font-bold text-library-green-dark mt-1">
               {stats?.totalBooks !== undefined ? stats.totalBooks : 0}
             </h3>
+            <span className="text-[10px] text-library-charcoal-muted">Volumes in repository</span>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-lg bg-library-green/10 text-library-green border border-library-green/20 flex items-center justify-center shadow-inner">
             <BookOpen className="w-5 h-5" />
           </div>
         </div>
 
         {/* Total Students */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-library-border border-l-4 border-l-library-gold shadow-sm card-hover flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Students</p>
-            <h3 className="text-2xl font-extrabold text-slate-800 mt-1">
+            <p className="text-[11px] font-bold text-library-charcoal-muted uppercase tracking-wider">Enrolled Readers</p>
+            <h3 className="font-serif text-3xl font-bold text-library-charcoal mt-1">
               {stats?.totalStudents !== undefined ? stats.totalStudents : 0}
             </h3>
+            <span className="text-[10px] text-library-charcoal-muted">Registered memberships</span>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-lg bg-library-gold/15 text-library-walnut border border-library-gold/30 flex items-center justify-center shadow-inner">
             <Users className="w-5 h-5" />
           </div>
         </div>
 
         {/* Issued Books */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-library-border border-l-4 border-l-library-walnut shadow-sm card-hover flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Issued Books</p>
-            <h3 className="text-2xl font-extrabold text-amber-600 mt-1">
+            <p className="text-[11px] font-bold text-library-charcoal-muted uppercase tracking-wider">Active Loans</p>
+            <h3 className="font-serif text-3xl font-bold text-library-walnut mt-1">
               {stats?.issuedBooks !== undefined ? stats.issuedBooks : 0}
             </h3>
+            <span className="text-[10px] text-library-walnut">Currently circulated</span>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-lg bg-library-walnut/15 text-library-walnut border border-library-walnut/30 flex items-center justify-center shadow-inner">
             <BookPlus className="w-5 h-5" />
           </div>
         </div>
 
         {/* Available Books */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-library-border border-l-4 border-l-library-green-dark shadow-sm card-hover flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Available Books</p>
-            <h3 className="text-2xl font-extrabold text-emerald-600 mt-1">
+            <p className="text-[11px] font-bold text-library-charcoal-muted uppercase tracking-wider">On Shelf Stock</p>
+            <h3 className="font-serif text-3xl font-bold text-library-green-dark mt-1">
               {stats?.availableBooks !== undefined ? stats.availableBooks : 0}
             </h3>
+            <span className="text-[10px] text-library-green">Ready for checkout</span>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-lg bg-library-green-subtle text-library-green-dark border border-library-green/20 flex items-center justify-center shadow-inner">
             <BookCheck className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Recent Transactions Table */}
-      <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
+      <div className="bg-white rounded-xl border border-library-border p-6 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-library-border/60 pb-3">
           <div>
-            <h2 className="text-sm font-bold text-slate-800">Recent Transactions</h2>
-            <p className="text-xs text-slate-500">Latest book borrowing and return records</p>
+            <h2 className="font-serif text-lg font-bold text-library-green-dark">Circulation Ledger</h2>
+            <p className="text-xs text-library-charcoal-muted">Recent loan checkouts and returns recorded in the archive</p>
           </div>
           <button
             onClick={() => navigate('/transactions')}
-            className="text-xs font-bold text-indigo-600 hover:underline"
+            className="font-serif text-xs font-semibold text-library-walnut hover:text-library-green flex items-center gap-1 transition-colors self-start sm:self-auto"
           >
-            View All Transactions →
+            <span>Complete Audit Records</span>
+            <History className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-lg border border-library-border">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase">
-                <th className="py-2.5 px-3">ID</th>
-                <th className="py-2.5 px-3">Student</th>
-                <th className="py-2.5 px-3">Book</th>
-                <th className="py-2.5 px-3">Issue Date</th>
-                <th className="py-2.5 px-3">Due Date</th>
-                <th className="py-2.5 px-3 text-right">Status</th>
+              <tr className="bg-library-cream/60 border-b border-library-border text-library-charcoal font-serif font-bold uppercase tracking-wider">
+                <th className="py-3 px-3.5">Ref #</th>
+                <th className="py-3 px-3.5">Reader</th>
+                <th className="py-3 px-3.5">Volume Title</th>
+                <th className="py-3 px-3.5">Issued Date</th>
+                <th className="py-3 px-3.5">Due Date</th>
+                <th className="py-3 px-3.5 text-right">Circulation Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-library-border/50 bg-white">
               {stats?.recentTransactions && stats.recentTransactions.length > 0 ? (
                 stats.recentTransactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-slate-50">
-                    <td className="py-2.5 px-3 font-mono text-slate-500">#{tx.id}</td>
-                    <td className="py-2.5 px-3">
-                      <span className="font-bold text-slate-800">{tx.studentName}</span>{' '}
-                      <span className="text-slate-400">({tx.studentEnrollment})</span>
+                  <tr key={tx.id} className="hover:bg-library-cream/20 transition-colors">
+                    <td className="py-3 px-3.5 font-mono text-library-charcoal-muted font-medium">#{tx.id}</td>
+                    <td className="py-3 px-3.5">
+                      <span className="font-semibold text-library-charcoal">{tx.studentName}</span>{' '}
+                      <span className="text-library-charcoal-muted text-[11px]">({tx.studentEnrollment})</span>
                     </td>
-                    <td className="py-2.5 px-3 font-medium text-slate-700">{tx.bookTitle}</td>
-                    <td className="py-2.5 px-3 text-slate-600 font-mono">{tx.issueDate}</td>
-                    <td className="py-2.5 px-3 text-slate-600 font-mono">{tx.dueDate}</td>
-                    <td className="py-2.5 px-3 text-right">
+                    <td className="py-3 px-3.5 font-medium text-library-green-dark">{tx.bookTitle}</td>
+                    <td className="py-3 px-3.5 text-library-charcoal font-mono">{tx.issueDate}</td>
+                    <td className="py-3 px-3.5 text-library-charcoal font-mono">{tx.dueDate}</td>
+                    <td className="py-3 px-3.5 text-right">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                        className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                           tx.status === 'ISSUED'
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-emerald-100 text-emerald-800'
+                            ? 'bg-library-gold-subtle text-library-walnut border-library-gold/40'
+                            : 'bg-library-green-subtle text-library-green-dark border-library-green/40'
                         }`}
                       >
                         {tx.status}
@@ -181,8 +192,8 @@ export const Dashboard = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="py-6 text-center text-slate-400">
-                    No recent transactions recorded.
+                  <td colSpan="6" className="py-8 text-center text-library-charcoal-muted italic font-serif">
+                    No recent circulation transactions recorded in the ledger.
                   </td>
                 </tr>
               )}

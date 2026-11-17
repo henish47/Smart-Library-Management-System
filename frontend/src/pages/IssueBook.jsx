@@ -100,12 +100,16 @@ export const IssueBook = () => {
 
   return (
     <div className="space-y-5 max-w-2xl mx-auto">
-      <div>
-        <h1 className="text-xl font-bold text-slate-800">Issue Book</h1>
-        <p className="text-xs text-slate-500">Issue an available book to a student</p>
+      <div className="pb-2 border-b border-library-border/70">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-library-green-dark tracking-tight">
+          Circulation Desk: Issue Volume
+        </h1>
+        <p className="font-serif text-xs italic text-library-charcoal-muted mt-1">
+          Record student book borrowing and generate official loan due date
+        </p>
       </div>
 
-      <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm space-y-4">
+      <div className="bg-white rounded-xl p-7 border border-library-border border-t-4 border-t-library-green shadow-sm space-y-5">
         {formError && (
           <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -114,34 +118,42 @@ export const IssueBook = () => {
         )}
 
         {successMessage && (
-          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-xs flex items-center justify-between">
+          <div className="p-3.5 bg-library-green-subtle border border-library-green/40 rounded-lg text-library-green-dark text-xs flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-              <span>{successMessage}</span>
+              <CheckCircle2 className="w-4 h-4 text-library-green flex-shrink-0" />
+              <span className="font-serif font-semibold">{successMessage}</span>
             </div>
             <button
               onClick={() => navigate('/transactions')}
-              className="text-xs font-bold text-emerald-800 underline"
+              className="text-xs font-serif font-bold text-library-walnut hover:underline"
             >
-              View Transactions
+              View Circulation Ledger →
             </button>
           </div>
         )}
 
+        {/* Academic Slip Notice */}
+        <div className="bg-library-cream/50 border border-library-border p-3.5 rounded-lg text-[11px] text-library-charcoal flex items-start gap-2.5">
+          <BookPlus className="w-4 h-4 text-library-walnut flex-shrink-0 mt-0.5" />
+          <p>
+            Standard library loan policy grants <strong>14 days</strong> circulation. Verified volume available count will be adjusted on the shelf automatically.
+          </p>
+        </div>
+
         <form onSubmit={handleIssue} className="space-y-4 text-xs">
           {/* Select Student */}
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Select Student *</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1.5">Select Enrolled Reader *</label>
             <select
               required
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2.5 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
             >
-              <option value="">-- Choose Student --</option>
+              <option value="">-- Choose Reader from Directory --</option>
               {students.map((st) => (
                 <option key={st.id} value={st.id}>
-                  {st.name} ({st.enrollmentNo}) - {st.department || 'N/A'}
+                  {st.name} ({st.enrollmentNo}) - {st.department || 'General'}
                 </option>
               ))}
             </select>
@@ -149,14 +161,14 @@ export const IssueBook = () => {
 
           {/* Select Book */}
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Select Book *</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1.5">Select Catalog Volume *</label>
             <select
               required
               value={bookId}
               onChange={(e) => setBookId(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2.5 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
             >
-              <option value="">-- Choose Book --</option>
+              <option value="">-- Choose Volume from Catalog --</option>
               {books.map((b) => (
                 <option key={b.id} value={b.id} disabled={b.availableQuantity <= 0}>
                   {b.title} by {b.author} ({b.availableQuantity > 0 ? `${b.availableQuantity} available` : 'OUT OF STOCK'})
@@ -166,38 +178,38 @@ export const IssueBook = () => {
           </div>
 
           {/* Dates */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Issue Date *</label>
+              <label className="block font-serif font-bold text-library-charcoal mb-1.5">Issue Date *</label>
               <input
                 type="date"
                 required
                 value={issueDate}
                 onChange={(e) => setIssueDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+                className="w-full px-3 py-2.5 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal font-mono"
               />
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Due Date *</label>
+              <label className="block font-serif font-bold text-library-charcoal mb-1.5">Due Date *</label>
               <input
                 type="date"
                 required
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+                className="w-full px-3 py-2.5 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal font-mono"
               />
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <div className="pt-4 border-t border-library-border/70 flex items-center justify-end gap-2.5">
             <button
               type="submit"
               disabled={submitting}
-              className="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs disabled:opacity-70 flex items-center gap-1.5"
+              className="px-6 py-2.5 rounded-lg bg-library-green hover:bg-library-green-dark text-library-ivory font-semibold text-xs border border-library-gold/30 shadow-sm transition-all disabled:opacity-70 flex items-center gap-2"
             >
               {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              Issue Book
+              <span>Confirm & Issue Book</span>
             </button>
           </div>
         </form>

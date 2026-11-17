@@ -162,77 +162,85 @@ export const Students = () => {
   return (
     <div className="space-y-5">
       {/* Header & Add Button */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-library-border/70">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Students Management</h1>
-          <p className="text-xs text-slate-500">Manage registered college students</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-library-green-dark tracking-tight">
+            Reader Registry
+          </h1>
+          <p className="font-serif text-xs italic text-library-charcoal-muted mt-1">
+            Student memberships, academic departments, and borrowing permissions directory
+          </p>
         </div>
 
         <button
           onClick={handleOpenCreateModal}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-4 py-2 bg-library-green hover:bg-library-green-dark text-library-ivory text-xs font-semibold rounded-lg shadow-sm border border-library-gold/30 self-start sm:self-auto transition-all"
         >
-          <Plus className="w-4 h-4" />
-          Add Student
+          <Plus className="w-4 h-4 text-library-gold" />
+          <span>Enroll New Reader</span>
         </button>
       </div>
 
-      {/* Simple Search Bar */}
-      <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+      {/* Search Bar */}
+      <div className="bg-white p-3.5 rounded-xl border border-library-border shadow-sm">
         <form onSubmit={handleSearch} className="relative w-full max-w-md">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by enrollment no or name..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+            placeholder="Search directory by enrollment no, student name, or branch..."
+            className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal placeholder:text-library-charcoal-muted/70 transition-all"
           />
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2" />
+          <Search className="w-4 h-4 text-library-walnut absolute left-3 top-2.5" />
         </form>
       </div>
 
       {/* Students Table */}
       {loading ? (
-        <LoadingSpinner message="Loading students..." />
+        <LoadingSpinner message="Consulting membership records..." />
       ) : error ? (
         <ErrorState message={error} onRetry={loadStudents} />
       ) : students.length === 0 ? (
         <EmptyState
-          title="No Students Found"
-          description={searchQuery ? `No matches for "${searchQuery}".` : 'No registered students yet.'}
-          actionText="Add Student"
+          title="No Readers Found"
+          description={searchQuery ? `No records found matching "${searchQuery}".` : 'No registered students in the library records yet.'}
+          actionText="Enroll First Reader"
           onAction={handleOpenCreateModal}
         />
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-library-border overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase">
-                  <th className="py-2.5 px-3">ID</th>
-                  <th className="py-2.5 px-3">Enrollment No</th>
-                  <th className="py-2.5 px-3">Name</th>
-                  <th className="py-2.5 px-3">Department</th>
-                  <th className="py-2.5 px-3 text-center">Semester</th>
-                  <th className="py-2.5 px-3">Email</th>
-                  <th className="py-2.5 px-3">Phone</th>
-                  <th className="py-2.5 px-3 text-right">Actions</th>
+                <tr className="bg-library-cream/60 border-b border-library-border text-library-charcoal font-serif font-bold uppercase tracking-wider text-[11px]">
+                  <th className="py-3 px-3.5">Ref #</th>
+                  <th className="py-3 px-3.5">Enrollment No</th>
+                  <th className="py-3 px-3.5">Reader Name</th>
+                  <th className="py-3 px-3.5">Department</th>
+                  <th className="py-3 px-3.5 text-center">Semester</th>
+                  <th className="py-3 px-3.5">Contact Email</th>
+                  <th className="py-3 px-3.5">Phone</th>
+                  <th className="py-3 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-library-border/50 bg-white">
                 {students.map((st) => (
-                  <tr key={st.id} className="hover:bg-slate-50">
-                    <td className="py-2.5 px-3 font-mono text-slate-500">#{st.id}</td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-indigo-600">{st.enrollmentNo}</td>
-                    <td className="py-2.5 px-3 font-bold text-slate-800">{st.name}</td>
-                    <td className="py-2.5 px-3 text-slate-600">{st.department || 'N/A'}</td>
-                    <td className="py-2.5 px-3 text-center font-semibold text-slate-700">{st.semester}</td>
-                    <td className="py-2.5 px-3 text-slate-600">{st.email || '-'}</td>
-                    <td className="py-2.5 px-3 font-mono text-slate-500">{st.phone || '-'}</td>
-                    <td className="py-2.5 px-3 text-right space-x-1">
+                  <tr key={st.id} className="hover:bg-library-cream/20 transition-colors">
+                    <td className="py-3 px-3.5 font-mono text-library-charcoal-muted font-medium">#{st.id}</td>
+                    <td className="py-3 px-3.5 font-mono font-bold text-library-green-dark">{st.enrollmentNo}</td>
+                    <td className="py-3 px-3.5 font-serif font-bold text-library-charcoal text-sm">{st.name}</td>
+                    <td className="py-3 px-3.5">
+                      <span className="px-2.5 py-0.5 rounded bg-library-cream/80 text-library-walnut-dark border border-library-border/70 font-medium text-[11px]">
+                        {st.department || 'General'}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3.5 text-center font-semibold text-library-charcoal">Sem {st.semester}</td>
+                    <td className="py-3 px-3.5 text-library-charcoal font-mono text-[11px]">{st.email || '-'}</td>
+                    <td className="py-3 px-3.5 font-mono text-library-charcoal-muted">{st.phone || '-'}</td>
+                    <td className="py-3 px-3.5 text-right space-x-1.5">
                       <button
                         onClick={() => handleOpenEditModal(st)}
-                        className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold"
+                        className="px-2.5 py-1 bg-library-cream/70 hover:bg-library-cream text-library-charcoal border border-library-border rounded font-medium text-xs transition-colors"
                       >
                         Edit
                       </button>
@@ -241,7 +249,7 @@ export const Students = () => {
                           setStudentToDelete(st);
                           setIsDeleteModalOpen(true);
                         }}
-                        className="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded font-semibold"
+                        className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded font-medium text-xs transition-colors"
                       >
                         Delete
                       </button>
@@ -251,8 +259,9 @@ export const Students = () => {
               </tbody>
             </table>
           </div>
-          <div className="p-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500">
-            Total {students.length} students registered
+          <div className="p-3.5 bg-library-cream/40 border-t border-library-border text-xs text-library-charcoal-muted font-serif flex items-center justify-between">
+            <span>Official Reader Directory Records</span>
+            <span className="font-semibold text-library-charcoal">Total {students.length} readers registered</span>
           </div>
         </div>
       )}
@@ -261,55 +270,55 @@ export const Students = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingStudent ? 'Edit Student' : 'Add New Student'}
+        title={editingStudent ? 'Edit Reader Record' : 'Enroll New Reader'}
         size="sm"
       >
         {formError && (
-          <div className="mb-3 p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{formError}</span>
           </div>
         )}
 
-        <form onSubmit={handleSaveStudent} className="space-y-3 text-xs">
+        <form onSubmit={handleSaveStudent} className="space-y-4 text-xs">
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Enrollment Number *</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1">Enrollment Number *</label>
             <input
               type="text"
               required
               value={formData.enrollmentNo}
               onChange={(e) => setFormData({ ...formData, enrollmentNo: e.target.value })}
               placeholder="e.g. 210010116001"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal font-mono"
             />
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Student Full Name *</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1">Student Full Name *</label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="e.g. Aarav Patel"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Department</label>
+              <label className="block font-serif font-bold text-library-charcoal mb-1">Department</label>
               <input
                 type="text"
                 value={formData.department}
                 onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                placeholder="e.g. CE"
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+                placeholder="e.g. Computer Engineering"
+                className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
               />
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Semester (1-8)</label>
+              <label className="block font-serif font-bold text-library-charcoal mb-1">Semester (1-8)</label>
               <input
                 type="number"
                 min="1"
@@ -317,47 +326,47 @@ export const Students = () => {
                 required
                 value={formData.semester}
                 onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+                className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
               />
             </div>
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Email Address</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1">Email Address</label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="student@college.edu"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
             />
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Phone Number</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1">Phone Number</label>
             <input
               type="text"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               placeholder="9876543210"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal font-mono"
             />
           </div>
 
-          <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <div className="flex justify-end gap-2.5 pt-4 border-t border-library-border/70">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold"
+              className="px-4 py-2 rounded-lg border border-library-border text-library-charcoal hover:bg-library-cream transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={formSubmitting}
-              className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-70"
+              className="px-5 py-2 rounded-lg bg-library-green hover:bg-library-green-dark text-library-ivory font-semibold border border-library-gold/30 shadow-sm transition-all disabled:opacity-70"
             >
-              {formSubmitting ? 'Saving...' : editingStudent ? 'Update' : 'Add'}
+              {formSubmitting ? 'Registering...' : editingStudent ? 'Save Updates' : 'Enroll Reader'}
             </button>
           </div>
         </form>
@@ -367,18 +376,21 @@ export const Students = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title="Confirm Deletion"
+        title="Confirm Reader De-registration"
         size="sm"
       >
-        <div className="space-y-3 text-xs text-slate-600">
-          <p>
-            Are you sure you want to delete student <strong>{studentToDelete?.name}</strong>?
+        <div className="space-y-4 text-xs text-library-charcoal">
+          <p className="font-serif">
+            Are you sure you want to remove reader <strong className="text-library-green-dark">"{studentToDelete?.name}"</strong> ({studentToDelete?.enrollmentNo}) from the directory?
           </p>
-          <div className="flex justify-end gap-2 pt-2">
+          <p className="text-[11px] text-library-charcoal-muted italic">
+            This will permanently delete the membership record.
+          </p>
+          <div className="flex justify-end gap-2.5 pt-3 border-t border-library-border/70">
             <button
               type="button"
               onClick={() => setIsDeleteModalOpen(false)}
-              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold"
+              className="px-4 py-2 rounded-lg border border-library-border text-library-charcoal hover:bg-library-cream transition-colors font-medium"
             >
               Cancel
             </button>
@@ -386,9 +398,9 @@ export const Students = () => {
               type="button"
               onClick={handleDeleteStudent}
               disabled={formSubmitting}
-              className="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold disabled:opacity-70"
+              className="px-4 py-2 rounded-lg bg-rose-700 hover:bg-rose-800 text-white font-semibold transition-all disabled:opacity-70"
             >
-              {formSubmitting ? 'Deleting...' : 'Delete'}
+              {formSubmitting ? 'Removing...' : 'Delete Reader'}
             </button>
           </div>
         </div>

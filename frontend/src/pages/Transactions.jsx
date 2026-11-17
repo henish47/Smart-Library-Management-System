@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   History,
   Search,
+  BookOpen,
+  Calendar,
+  CheckCircle2,
+  Clock,
 } from 'lucide-react';
 import { issuedBooksAPI } from '../services/api';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
@@ -45,103 +49,120 @@ export const Transactions = () => {
 
   return (
     <div className="space-y-5">
-      {/* Header */}
-      <div>
-        <h1 className="text-xl font-bold text-slate-800">Circulation Transactions</h1>
-        <p className="text-xs text-slate-500">History of all issued and returned library books</p>
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-library-border/70">
+        <div>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-library-green-dark tracking-tight">
+            Circulation Ledger & Audit Records
+          </h1>
+          <p className="font-serif text-xs italic text-library-charcoal-muted mt-1">
+            Historical register of book loans, reader borrowings, and returned volumes
+          </p>
+        </div>
       </div>
 
       {/* Filter Tabs & Search */}
-      <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold w-full sm:w-auto">
-          {['ALL', 'ISSUED', 'RETURNED'].map((st) => (
+      <div className="bg-white p-3.5 rounded-xl border border-library-border shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-1 bg-library-cream/60 p-1 rounded-lg text-xs font-serif font-semibold border border-library-border/60 w-full sm:w-auto">
+          {[
+            { key: 'ALL', label: 'All Records' },
+            { key: 'ISSUED', label: 'Active Loans' },
+            { key: 'RETURNED', label: 'Returned Archive' },
+          ].map(({ key, label }) => (
             <button
-              key={st}
-              onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1 rounded-md transition-all flex-1 sm:flex-none ${
-                statusFilter === st
-                  ? 'bg-white text-indigo-600 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+              key={key}
+              onClick={() => setStatusFilter(key)}
+              className={`px-3.5 py-1.5 rounded-md transition-all flex-1 sm:flex-none text-xs font-serif ${
+                statusFilter === key
+                  ? 'bg-library-green text-library-ivory shadow-sm font-bold'
+                  : 'text-library-charcoal hover:text-library-green-dark'
               }`}
             >
-              {st === 'ALL' ? 'All' : st === 'ISSUED' ? 'Issued' : 'Returned'}
+              {label}
             </button>
           ))}
         </div>
 
-        <div className="relative w-full sm:w-64">
+        <div className="relative w-full sm:w-72">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search transactions..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+            placeholder="Search by reader, enrollment, or title..."
+            className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal placeholder:text-library-charcoal-muted/70 transition-all"
           />
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2" />
+          <Search className="w-4 h-4 text-library-walnut absolute left-3 top-2.5" />
         </div>
       </div>
 
       {/* Table Content */}
       {loading ? (
-        <LoadingSpinner message="Loading transactions..." />
+        <LoadingSpinner message="Consulting circulation ledger..." />
       ) : error ? (
         <ErrorState message={error} onRetry={loadTransactions} />
       ) : filteredTransactions.length === 0 ? (
         <EmptyState
-          title="No Transactions Found"
-          description={searchQuery ? `No transactions match "${searchQuery}".` : 'No transactions recorded under this filter.'}
+          title="No Circulation Records Found"
+          description={
+            searchQuery
+              ? `No transactions match your search query "${searchQuery}".`
+              : 'No transaction entries recorded under this register filter.'
+          }
         />
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-library-border overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase">
-                  <th className="py-2.5 px-3">ID</th>
-                  <th className="py-2.5 px-3">Student</th>
-                  <th className="py-2.5 px-3">Book Title</th>
-                  <th className="py-2.5 px-3 font-mono">Issue Date</th>
-                  <th className="py-2.5 px-3 font-mono">Due Date</th>
-                  <th className="py-2.5 px-3 font-mono">Return Date</th>
-                  <th className="py-2.5 px-3 text-right">Status</th>
+                <tr className="bg-library-cream/60 border-b border-library-border text-library-charcoal font-serif font-bold uppercase tracking-wider text-[11px]">
+                  <th className="py-3 px-3.5">Slip #</th>
+                  <th className="py-3 px-3.5">Reader / Patron</th>
+                  <th className="py-3 px-3.5">Volume Title</th>
+                  <th className="py-3 px-3.5 font-mono">Date Issued</th>
+                  <th className="py-3 px-3.5 font-mono">Due Date</th>
+                  <th className="py-3 px-3.5 font-mono">Date Returned</th>
+                  <th className="py-3 px-3.5 text-right">Circulation Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-library-border/50 bg-white">
                 {filteredTransactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-slate-50">
-                    <td className="py-2.5 px-3 font-mono text-slate-500">#{tx.id}</td>
-                    <td className="py-2.5 px-3">
-                      <span className="font-bold text-slate-800">{tx.studentName}</span>{' '}
-                      <span className="text-slate-400 font-mono">({tx.studentEnrollment})</span>
+                  <tr key={tx.id} className="hover:bg-library-cream/20 transition-colors">
+                    <td className="py-3 px-3.5 font-mono text-library-charcoal-muted font-medium">#{tx.id}</td>
+                    <td className="py-3 px-3.5">
+                      <span className="font-serif font-bold text-library-green-dark">{tx.studentName}</span>{' '}
+                      <span className="text-library-charcoal-muted font-mono text-[11px]">({tx.studentEnrollment})</span>
                     </td>
-                    <td className="py-2.5 px-3 font-medium text-slate-800">{tx.bookTitle}</td>
-                    <td className="py-2.5 px-3 font-mono text-slate-600">{tx.issueDate}</td>
-                    <td className="py-2.5 px-3 font-mono text-slate-600">{tx.dueDate}</td>
-                    <td className="py-2.5 px-3 font-mono text-slate-600">
+                    <td className="py-3 px-3.5 font-serif font-semibold text-library-charcoal">{tx.bookTitle}</td>
+                    <td className="py-3 px-3.5 font-mono text-library-charcoal-muted">{tx.issueDate}</td>
+                    <td className="py-3 px-3.5 font-mono text-library-walnut font-medium">{tx.dueDate}</td>
+                    <td className="py-3 px-3.5 font-mono">
                       {tx.returnDate ? (
-                        <span className="text-emerald-700 font-semibold">{tx.returnDate}</span>
+                        <span className="text-library-green font-semibold">{tx.returnDate}</span>
                       ) : (
-                        <span className="text-slate-400">-</span>
+                        <span className="text-library-charcoal-muted/50 italic font-sans">—</span>
                       )}
                     </td>
-                    <td className="py-2.5 px-3 text-right">
-                      <span
-                        className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
-                          tx.status === 'ISSUED'
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-emerald-100 text-emerald-800'
-                        }`}
-                      >
-                        {tx.status}
-                      </span>
+                    <td className="py-3 px-3.5 text-right">
+                      {tx.status === 'ISSUED' ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-serif font-bold tracking-wider uppercase bg-library-gold/20 text-library-walnut border border-library-gold/40">
+                          <Clock className="w-3 h-3 text-library-gold" />
+                          On Loan
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-serif font-bold tracking-wider uppercase bg-library-green/10 text-library-green border border-library-green/30">
+                          <CheckCircle2 className="w-3 h-3 text-library-green" />
+                          Returned
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="p-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500">
-            Showing {filteredTransactions.length} transaction records
+          <div className="p-3.5 bg-library-cream/40 border-t border-library-border font-serif text-xs text-library-charcoal-muted flex justify-between items-center">
+            <span>Showing {filteredTransactions.length} circulation ledger entries</span>
+            <span className="font-mono text-[11px] text-library-walnut">Archive Log Verified</span>
           </div>
         </div>
       )}

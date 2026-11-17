@@ -5,66 +5,53 @@ export const StatCard = ({
   value,
   subtitle,
   icon: Icon,
-  color = 'indigo',
-  trend,
+  color = 'green',
 }) => {
   const colorMap = {
-    indigo: {
-      bg: 'bg-indigo-50',
-      text: 'text-indigo-600',
-      border: 'border-indigo-100',
-      badge: 'bg-indigo-50 text-indigo-700',
+    green: {
+      bg: 'bg-library-green/10',
+      text: 'text-library-green',
+      border: 'border-library-border',
+      accent: 'border-l-library-green',
     },
-    emerald: {
-      bg: 'bg-emerald-50',
-      text: 'text-emerald-600',
-      border: 'border-emerald-100',
-      badge: 'bg-emerald-50 text-emerald-700',
+    gold: {
+      bg: 'bg-library-gold/15',
+      text: 'text-library-walnut',
+      border: 'border-library-border',
+      accent: 'border-l-library-gold',
     },
-    amber: {
-      bg: 'bg-amber-50',
-      text: 'text-amber-600',
-      border: 'border-amber-100',
-      badge: 'bg-amber-50 text-amber-700',
+    walnut: {
+      bg: 'bg-library-walnut/10',
+      text: 'text-library-walnut',
+      border: 'border-library-border',
+      accent: 'border-l-library-walnut',
     },
-    blue: {
-      bg: 'bg-blue-50',
-      text: 'text-blue-600',
-      border: 'border-blue-100',
-      badge: 'bg-blue-50 text-blue-700',
-    },
-    violet: {
-      bg: 'bg-violet-50',
-      text: 'text-violet-600',
-      border: 'border-violet-100',
-      badge: 'bg-violet-50 text-violet-700',
-    },
-    rose: {
-      bg: 'bg-rose-50',
-      text: 'text-rose-600',
-      border: 'border-rose-100',
-      badge: 'bg-rose-50 text-rose-700',
+    darkgreen: {
+      bg: 'bg-library-green-dark/10',
+      text: 'text-library-green-dark',
+      border: 'border-library-border',
+      accent: 'border-l-library-green-dark',
     },
   };
 
-  const currentTheme = colorMap[color] || colorMap.indigo;
+  const currentTheme = colorMap[color] || colorMap.green;
 
   return (
-    <div className={`bg-white rounded-2xl p-6 border ${currentTheme.border} shadow-sm card-hover relative overflow-hidden flex flex-col justify-between`}>
+    <div className={`bg-white rounded-xl p-5 border ${currentTheme.border} border-l-4 ${currentTheme.accent} shadow-sm card-hover relative overflow-hidden flex flex-col justify-between`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-semibold text-slate-500 tracking-wide uppercase">{title}</span>
+        <span className="text-[11px] font-bold text-library-charcoal-muted tracking-wider uppercase">{title}</span>
         {Icon && (
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${currentTheme.bg} ${currentTheme.text}`}>
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${currentTheme.bg} ${currentTheme.text} border border-library-border/50 shadow-inner`}>
             <Icon className="w-5 h-5" />
           </div>
         )}
       </div>
       <div>
-        <div className="text-3xl font-bold text-slate-800 tracking-tight mb-1">
+        <div className="font-serif text-3xl font-bold text-library-charcoal tracking-tight mb-1">
           {value !== undefined && value !== null ? value.toLocaleString() : '0'}
         </div>
         {subtitle && (
-          <div className="text-xs text-slate-500 font-medium">{subtitle}</div>
+          <div className="text-xs text-library-walnut font-medium">{subtitle}</div>
         )}
       </div>
     </div>

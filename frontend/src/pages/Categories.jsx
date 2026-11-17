@@ -126,55 +126,59 @@ export const Categories = () => {
   return (
     <div className="space-y-5">
       {/* Header & Add Button */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-library-border/70">
         <div>
-          <h1 className="text-xl font-bold text-slate-800">Categories Management</h1>
-          <p className="text-xs text-slate-500">Manage book genres and subject categories</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-library-green-dark tracking-tight">
+            Classification & Genres
+          </h1>
+          <p className="font-serif text-xs italic text-library-charcoal-muted mt-1">
+            Organize volumes into academic disciplines, departments, and research subjects
+          </p>
         </div>
 
         <button
           onClick={handleOpenCreateModal}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-4 py-2 bg-library-green hover:bg-library-green-dark text-library-ivory text-xs font-semibold rounded-lg shadow-sm border border-library-gold/30 self-start sm:self-auto transition-all"
         >
-          <Plus className="w-4 h-4" />
-          Add Category
+          <Plus className="w-4 h-4 text-library-gold" />
+          <span>New Classification</span>
         </button>
       </div>
 
       {/* Main Content */}
       {loading ? (
-        <LoadingSpinner message="Loading categories..." />
+        <LoadingSpinner message="Loading classification archives..." />
       ) : error ? (
         <ErrorState message={error} onRetry={loadCategories} />
       ) : categories.length === 0 ? (
         <EmptyState
-          title="No Categories Available"
-          description="Create categories to organize books."
-          actionText="Add Category"
+          title="No Classifications Defined"
+          description="Create academic categories to organize and index library volumes."
+          actionText="Create First Category"
           onAction={handleOpenCreateModal}
         />
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-library-border overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase">
-                  <th className="py-2.5 px-3">ID</th>
-                  <th className="py-2.5 px-3">Category Name</th>
-                  <th className="py-2.5 px-3">Description</th>
-                  <th className="py-2.5 px-3 text-right">Actions</th>
+                <tr className="bg-library-cream/60 border-b border-library-border text-library-charcoal font-serif font-bold uppercase tracking-wider text-[11px]">
+                  <th className="py-3 px-3.5">Ref #</th>
+                  <th className="py-3 px-3.5">Classification Name</th>
+                  <th className="py-3 px-3.5">Subject Description</th>
+                  <th className="py-3 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-library-border/50 bg-white">
                 {categories.map((cat) => (
-                  <tr key={cat.id} className="hover:bg-slate-50">
-                    <td className="py-2.5 px-3 font-mono text-slate-500">#{cat.id}</td>
-                    <td className="py-2.5 px-3 font-bold text-slate-800">{cat.name}</td>
-                    <td className="py-2.5 px-3 text-slate-600">{cat.description || '-'}</td>
-                    <td className="py-2.5 px-3 text-right space-x-1">
+                  <tr key={cat.id} className="hover:bg-library-cream/20 transition-colors">
+                    <td className="py-3 px-3.5 font-mono text-library-charcoal-muted font-medium">#{cat.id}</td>
+                    <td className="py-3 px-3.5 font-serif font-bold text-library-green-dark text-sm">{cat.name}</td>
+                    <td className="py-3 px-3.5 text-library-charcoal font-medium">{cat.description || '-'}</td>
+                    <td className="py-3 px-3.5 text-right space-x-1.5">
                       <button
                         onClick={() => handleOpenEditModal(cat)}
-                        className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold"
+                        className="px-2.5 py-1 bg-library-cream/70 hover:bg-library-cream text-library-charcoal border border-library-border rounded font-medium text-xs transition-colors"
                       >
                         Edit
                       </button>
@@ -183,7 +187,7 @@ export const Categories = () => {
                           setCategoryToDelete(cat);
                           setIsDeleteModalOpen(true);
                         }}
-                        className="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded font-semibold"
+                        className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded font-medium text-xs transition-colors"
                       >
                         Delete
                       </button>
@@ -193,8 +197,9 @@ export const Categories = () => {
               </tbody>
             </table>
           </div>
-          <div className="p-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500">
-            Total {categories.length} categories
+          <div className="p-3.5 bg-library-cream/40 border-t border-library-border text-xs text-library-charcoal-muted font-serif flex items-center justify-between">
+            <span>Academic Classification Index</span>
+            <span className="font-semibold text-library-charcoal">Total {categories.length} categories indexed</span>
           </div>
         </div>
       )}
@@ -203,54 +208,54 @@ export const Categories = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingCategory ? 'Edit Category' : 'Add New Category'}
+        title={editingCategory ? 'Edit Classification' : 'Add New Classification'}
         size="sm"
       >
         {formError && (
-          <div className="mb-3 p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{formError}</span>
           </div>
         )}
 
-        <form onSubmit={handleSaveCategory} className="space-y-3 text-xs">
+        <form onSubmit={handleSaveCategory} className="space-y-4 text-xs">
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Category Name *</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1">Classification Name *</label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="e.g. Artificial Intelligence"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+              className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
             />
           </div>
 
           <div>
-            <label className="block font-bold text-slate-700 mb-1">Description</label>
+            <label className="block font-serif font-bold text-library-charcoal mb-1">Scope & Description</label>
             <textarea
               rows={3}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="e.g. AI, Machine Learning, Deep Learning"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-600"
+              placeholder="e.g. Machine learning, neural networks, computer vision, algorithms"
+              className="w-full px-3 py-2 rounded-lg border border-library-border bg-library-ivory-light/40 focus:outline-none focus:border-library-green focus:bg-white text-library-charcoal"
             />
           </div>
 
-          <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <div className="flex justify-end gap-2.5 pt-4 border-t border-library-border/70">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold"
+              className="px-4 py-2 rounded-lg border border-library-border text-library-charcoal hover:bg-library-cream transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={formSubmitting}
-              className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold disabled:opacity-70"
+              className="px-5 py-2 rounded-lg bg-library-green hover:bg-library-green-dark text-library-ivory font-semibold border border-library-gold/30 shadow-sm transition-all disabled:opacity-70"
             >
-              {formSubmitting ? 'Saving...' : editingCategory ? 'Update' : 'Add'}
+              {formSubmitting ? 'Saving...' : editingCategory ? 'Save Updates' : 'Add Category'}
             </button>
           </div>
         </form>
@@ -260,18 +265,21 @@ export const Categories = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title="Confirm Deletion"
+        title="Confirm Category Deletion"
         size="sm"
       >
-        <div className="space-y-3 text-xs text-slate-600">
-          <p>
-            Are you sure you want to delete category <strong>{categoryToDelete?.name}</strong>?
+        <div className="space-y-4 text-xs text-library-charcoal">
+          <p className="font-serif">
+            Are you sure you want to remove category <strong className="text-library-green-dark">"{categoryToDelete?.name}"</strong>?
           </p>
-          <div className="flex justify-end gap-2 pt-2">
+          <p className="text-[11px] text-library-charcoal-muted italic">
+            Note: If books are currently linked to this category, deletion may be prevented to protect catalog integrity.
+          </p>
+          <div className="flex justify-end gap-2.5 pt-3 border-t border-library-border/70">
             <button
               type="button"
               onClick={() => setIsDeleteModalOpen(false)}
-              className="px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold"
+              className="px-4 py-2 rounded-lg border border-library-border text-library-charcoal hover:bg-library-cream transition-colors font-medium"
             >
               Cancel
             </button>
@@ -279,9 +287,9 @@ export const Categories = () => {
               type="button"
               onClick={handleDeleteCategory}
               disabled={formSubmitting}
-              className="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold disabled:opacity-70"
+              className="px-4 py-2 rounded-lg bg-rose-700 hover:bg-rose-800 text-white font-semibold transition-all disabled:opacity-70"
             >
-              {formSubmitting ? 'Deleting...' : 'Delete'}
+              {formSubmitting ? 'Deleting...' : 'Delete Category'}
             </button>
           </div>
         </div>

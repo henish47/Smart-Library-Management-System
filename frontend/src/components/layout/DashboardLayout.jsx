@@ -7,7 +7,7 @@ export const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-library-ivory flex text-library-charcoal">
       {/* Sidebar Navigation */}
       <Sidebar
         isOpen={sidebarOpen}

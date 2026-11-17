@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Library, Lock, User, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import { Library, Lock, User, ArrowRight, AlertCircle, Loader2, BookOpen } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Login = () => {
@@ -18,7 +18,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
-      setError('Please enter both username and password.');
+      setError('Please provide both username and password.');
       return;
     }
 
@@ -28,49 +28,61 @@ export const Login = () => {
       await login(username.trim(), password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Login failed. Please check your credentials.');
+      setError(err.message || 'Authentication failed. Please verify your credentials.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Decorative background gradients */}
-      <div className="absolute top-0 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-gradient-to-b from-library-green-dark via-[#142820] to-[#0e1c16] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Subtle classical ambient glows */}
+      <div className="absolute top-0 -left-32 w-96 h-96 bg-library-gold/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 -right-32 w-96 h-96 bg-library-green/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-500/30">
-            <Library className="w-7 h-7" />
-          </div>
+      {/* Brand Header */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-library-green border-2 border-library-gold/50 shadow-xl mb-4">
+          <BookOpen className="w-8 h-8 text-library-gold" />
         </div>
-        <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-library-ivory tracking-tight">
           Library Management System
         </h2>
-        <p className="mt-2 text-center text-sm text-indigo-300">
-          Sign in to manage catalog, students, and circulation
+        <p className="font-serif text-xs italic text-library-cream/70 mt-1">
+          Academic Archives & Circulation Management System
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
-        <div className="bg-white/95 backdrop-blur-xl py-8 px-6 sm:px-10 shadow-2xl rounded-3xl border border-white/20">
+      {/* Login Card */}
+      <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
+        <div className="bg-library-ivory border border-library-border shadow-2xl rounded-2xl p-6 sm:p-9 relative">
+          {/* Subtle gold top trim */}
+          <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-transparent via-library-gold/60 to-transparent rounded-full" />
+
+          <div className="mb-6 text-center">
+            <h3 className="font-serif text-lg font-bold text-library-green-dark">
+              Curator Authentication
+            </h3>
+            <p className="font-serif text-xs text-library-charcoal-muted mt-0.5">
+              Sign in to access library catalog, readers, and loans
+            </p>
+          </div>
+
           {error && (
-            <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
-              <AlertCircle className="w-5 h-5 flex-shrink-0 text-rose-500 mt-0.5" />
+            <div className="mb-5 flex items-start gap-3 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs font-medium">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-700 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                Username
+              <label className="block font-serif text-xs font-bold uppercase tracking-wider text-library-charcoal mb-1.5">
+                Staff Username
               </label>
-              <div className="relative rounded-2xl shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <User className="w-5 h-5" />
+              <div className="relative rounded-xl shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-library-walnut">
+                  <User className="w-4 h-4" />
                 </div>
                 <input
                   type="text"
@@ -78,18 +90,18 @@ export const Login = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="e.g. admin"
-                  className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                  className="block w-full rounded-xl border border-library-border bg-white pl-10 pr-3 py-2.5 text-xs text-library-charcoal placeholder:text-library-charcoal-muted/60 focus:border-library-green focus:outline-none focus:ring-2 focus:ring-library-green/20 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
-                Password
+              <label className="block font-serif text-xs font-bold uppercase tracking-wider text-library-charcoal mb-1.5">
+                Security Password
               </label>
-              <div className="relative rounded-2xl shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <Lock className="w-5 h-5" />
+              <div className="relative rounded-xl shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-library-walnut">
+                  <Lock className="w-4 h-4" />
                 </div>
                 <input
                   type="password"
@@ -97,7 +109,7 @@ export const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                  className="block w-full rounded-xl border border-library-border bg-white pl-10 pr-3 py-2.5 text-xs text-library-charcoal placeholder:text-library-charcoal-muted/60 focus:border-library-green focus:outline-none focus:ring-2 focus:ring-library-green/20 transition-all"
                 />
               </div>
             </div>
@@ -106,32 +118,40 @@ export const Login = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 border border-transparent rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-100 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-library-gold/40 rounded-xl font-serif text-xs font-bold text-library-ivory bg-library-green hover:bg-library-green-dark shadow-md hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {submitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Signing in...
+                    <Loader2 className="w-4 h-4 animate-spin text-library-gold" />
+                    <span>Verifying Credentials...</span>
                   </>
                 ) : (
                   <>
-                    Sign In
-                    <ArrowRight className="w-4 h-4" />
+                    <span>Sign In to Circulation</span>
+                    <ArrowRight className="w-4 h-4 text-library-gold" />
                   </>
                 )}
               </button>
             </div>
           </form>
-          
-          <div className="mt-6 text-center">
-            <p className="text-xs text-slate-500">
-              Don't have an account?{' '}
-              <Link to="/register" className="font-bold text-indigo-600 hover:text-indigo-700">
-                Register here
+
+          <div className="mt-6 pt-4 border-t border-library-border/60 text-center">
+            <p className="font-serif text-xs text-library-charcoal-muted">
+              Need new staff enrollment?{' '}
+              <Link
+                to="/register"
+                className="font-bold text-library-walnut hover:text-library-green-dark underline decoration-library-gold/50 transition-colors"
+              >
+                Register credentials
               </Link>
             </p>
           </div>
         </div>
+
+        {/* Footer Note */}
+        <p className="text-center font-serif text-[11px] text-library-cream/50 mt-5">
+          Athenaeum Library Repository System • Authorized Staff Access
+        </p>
       </div>
     </div>
   );

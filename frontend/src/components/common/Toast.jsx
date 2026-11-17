@@ -20,36 +20,36 @@ export const Toast = ({
 
   const typeConfig = {
     success: {
-      bg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      icon: <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />,
+      bg: 'bg-library-green-dark text-library-ivory border-library-gold/50 shadow-library-lg',
+      icon: <CheckCircle2 className="w-5 h-5 text-library-gold flex-shrink-0" />,
     },
     error: {
-      bg: 'bg-rose-50 text-rose-800 border-rose-200',
-      icon: <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />,
+      bg: 'bg-[#4A1E1E] text-library-ivory border-rose-400/50 shadow-library-lg',
+      icon: <AlertCircle className="w-5 h-5 text-rose-300 flex-shrink-0" />,
     },
     warning: {
-      bg: 'bg-amber-50 text-amber-800 border-amber-200',
-      icon: <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />,
+      bg: 'bg-library-walnut text-library-ivory border-library-gold/50 shadow-library-lg',
+      icon: <AlertTriangle className="w-5 h-5 text-library-gold flex-shrink-0" />,
     },
     info: {
-      bg: 'bg-indigo-50 text-indigo-800 border-indigo-200',
-      icon: <Info className="w-5 h-5 text-indigo-600 flex-shrink-0" />,
+      bg: 'bg-library-green text-library-ivory border-library-gold/50 shadow-library-lg',
+      icon: <Info className="w-5 h-5 text-library-gold flex-shrink-0" />,
     },
   };
 
   const config = typeConfig[type] || typeConfig.info;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 animate-bounce-short">
+    <div className="fixed bottom-5 right-5 z-50">
       <div
-        className={`flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-lg backdrop-blur-md ${config.bg}`}
+        className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl backdrop-blur-md ${config.bg}`}
       >
         {config.icon}
-        <span className="text-sm font-medium pr-2">{message}</span>
+        <span className="font-serif text-xs tracking-wide pr-2">{message}</span>
         {onClose && (
           <button
             onClick={onClose}
-            className="p-1 rounded-lg opacity-70 hover:opacity-100 hover:bg-black/5 transition-opacity"
+            className="p-1 rounded hover:bg-white/10 text-white/70 hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

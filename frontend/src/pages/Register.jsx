@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Library, User, Mail, Lock, UserCheck, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Lock, UserCheck, AlertCircle, Loader2, CheckCircle2, BookOpen } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Register = () => {
@@ -18,12 +18,12 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim() || !username.trim() || !password.trim()) {
-      setError('Please fill in all required fields.');
+      setError('Please fill in all required credentials.');
       return;
     }
 
     if (password.length < 4) {
-      setError('Password must be at least 4 characters long.');
+      setError('Security password must contain at least 4 characters.');
       return;
     }
 
@@ -31,7 +31,7 @@ export const Register = () => {
       setError('');
       setSubmitting(true);
       await register(name.trim(), username.trim(), email.trim(), password);
-      setSuccessMsg('Registration successful! Redirecting to login...');
+      setSuccessMsg('Account registered successfully! Transferring to login...');
       setTimeout(() => {
         navigate('/login');
       }, 1500);
@@ -43,48 +43,52 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="absolute top-0 -right-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 -left-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-gradient-to-b from-library-green-dark via-[#142820] to-[#0e1c16] flex flex-col justify-center py-10 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Subtle classical ambient glows */}
+      <div className="absolute top-0 -right-32 w-96 h-96 bg-library-gold/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 -left-32 w-96 h-96 bg-library-green/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-500/30">
-            <Library className="w-7 h-7" />
-          </div>
+      {/* Brand Header */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-library-green border-2 border-library-gold/50 shadow-xl mb-3">
+          <BookOpen className="w-7 h-7 text-library-gold" />
         </div>
-        <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Create Account
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-library-ivory tracking-tight">
+          Curator Enrollment
         </h2>
-        <p className="mt-2 text-center text-sm text-indigo-300">
-          Register to manage the Library Management System
+        <p className="font-serif text-xs italic text-library-cream/70 mt-1">
+          Register new administrative staff into the library registry
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
-        <div className="bg-white/95 backdrop-blur-xl py-8 px-6 sm:px-10 shadow-2xl rounded-3xl border border-white/20">
+      {/* Register Card */}
+      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
+        <div className="bg-library-ivory border border-library-border shadow-2xl rounded-2xl p-6 sm:p-9 relative">
+          {/* Subtle gold top trim */}
+          <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-transparent via-library-gold/60 to-transparent rounded-full" />
+
           {error && (
-            <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
-              <AlertCircle className="w-5 h-5 flex-shrink-0 text-rose-500 mt-0.5" />
+            <div className="mb-4 flex items-start gap-3 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs font-medium">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-700 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm">
-              <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-500 mt-0.5" />
+            <div className="mb-4 flex items-start gap-3 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium">
+              <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-700 mt-0.5" />
               <span>{successMsg}</span>
             </div>
           )}
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-3.5" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+              <label className="block font-serif text-xs font-bold uppercase tracking-wider text-library-charcoal mb-1">
                 Full Name *
               </label>
-              <div className="relative rounded-2xl shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <UserCheck className="w-5 h-5" />
+              <div className="relative rounded-xl shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-library-walnut">
+                  <UserCheck className="w-4 h-4" />
                 </div>
                 <input
                   type="text"
@@ -92,18 +96,18 @@ export const Register = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Prof. Henish Patel"
-                  className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                  className="block w-full rounded-xl border border-library-border bg-white pl-10 pr-3 py-2 text-xs text-library-charcoal placeholder:text-library-charcoal-muted/60 focus:border-library-green focus:outline-none focus:ring-2 focus:ring-library-green/20 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                Username *
+              <label className="block font-serif text-xs font-bold uppercase tracking-wider text-library-charcoal mb-1">
+                Staff Username *
               </label>
-              <div className="relative rounded-2xl shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <User className="w-5 h-5" />
+              <div className="relative rounded-xl shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-library-walnut">
+                  <User className="w-4 h-4" />
                 </div>
                 <input
                   type="text"
@@ -111,36 +115,36 @@ export const Register = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="e.g. admin_henish"
-                  className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                  className="block w-full rounded-xl border border-library-border bg-white pl-10 pr-3 py-2 text-xs text-library-charcoal placeholder:text-library-charcoal-muted/60 focus:border-library-green focus:outline-none focus:ring-2 focus:ring-library-green/20 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                Email Address
+              <label className="block font-serif text-xs font-bold uppercase tracking-wider text-library-charcoal mb-1">
+                Institutional Email
               </label>
-              <div className="relative rounded-2xl shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <Mail className="w-5 h-5" />
+              <div className="relative rounded-xl shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-library-walnut">
+                  <Mail className="w-4 h-4" />
                 </div>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@library.edu"
-                  className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                  placeholder="librarian@institution.edu"
+                  className="block w-full rounded-xl border border-library-border bg-white pl-10 pr-3 py-2 text-xs text-library-charcoal placeholder:text-library-charcoal-muted/60 focus:border-library-green focus:outline-none focus:ring-2 focus:ring-library-green/20 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                Password *
+              <label className="block font-serif text-xs font-bold uppercase tracking-wider text-library-charcoal mb-1">
+                Security Password *
               </label>
-              <div className="relative rounded-2xl shadow-sm">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <Lock className="w-5 h-5" />
+              <div className="relative rounded-xl shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-library-walnut">
+                  <Lock className="w-4 h-4" />
                 </div>
                 <input
                   type="password"
@@ -148,38 +152,46 @@ export const Register = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Minimum 4 characters"
-                  className="block w-full rounded-xl border border-slate-200 pl-11 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all outline-none"
+                  className="block w-full rounded-xl border border-library-border bg-white pl-10 pr-3 py-2 text-xs text-library-charcoal placeholder:text-library-charcoal-muted/60 focus:border-library-green focus:outline-none focus:ring-2 focus:ring-library-green/20 transition-all"
                 />
               </div>
             </div>
 
-            <div className="pt-3">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-transparent rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-100 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 border border-library-gold/40 rounded-xl font-serif text-xs font-bold text-library-ivory bg-library-green hover:bg-library-green-dark shadow-md hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {submitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Creating Account...
+                    <Loader2 className="w-4 h-4 animate-spin text-library-gold" />
+                    <span>Registering Credentials...</span>
                   </>
                 ) : (
-                  'Create Admin Account'
+                  'Complete Enrollment'
                 )}
               </button>
             </div>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-xs text-slate-500">
-              Already have an account?{' '}
-              <Link to="/login" className="font-bold text-indigo-600 hover:text-indigo-700">
-                Sign in
+          <div className="mt-5 pt-3.5 border-t border-library-border/60 text-center">
+            <p className="font-serif text-xs text-library-charcoal-muted">
+              Already enrolled as staff?{' '}
+              <Link
+                to="/login"
+                className="font-bold text-library-walnut hover:text-library-green-dark underline decoration-library-gold/50 transition-colors"
+              >
+                Sign in to system
               </Link>
             </p>
           </div>
         </div>
+
+        {/* Footer Note */}
+        <p className="text-center font-serif text-[11px] text-library-cream/50 mt-4">
+          Athenaeum Library Repository System • Authorized Staff Access
+        </p>
       </div>
     </div>
   );
